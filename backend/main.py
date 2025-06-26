@@ -15,12 +15,11 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS (adjust allowed origins in production)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "*"
-    ],  # Replace with ['http://localhost:8501'] or actual domain in prod
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,7 +33,7 @@ class AgentRequest(BaseModel):
 
 @app.get("/")
 async def health_check():
-    return {"status": "✅ TailorTalk API is live"}
+    return {"status": "TailorTalk API is live"}
 
 
 @app.get("/login")
@@ -55,8 +54,7 @@ async def oauth2callback(request: Request):
 
         email, name = finish_google_auth(code)
 
-        # Redirect to frontend with login info
-        frontend_url = f"http://localhost:8501?email={email}&name={name}"
+        frontend_url = f"https://tailor-talk-streamlit.onrender.com?email={email}&name={name}"
         return RedirectResponse(url=frontend_url)
 
     except Exception as e:
@@ -73,7 +71,7 @@ async def run_agent(request: AgentRequest):
             {"user_input": request.user_input, "email": request.email}
         )
         return {
-            "response": result.get("response", "❓ Sorry, I didn’t understand that.")
+            "response": result.get("response", "Sorry, I didn’t understand that.")
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Agent error: {e}")
@@ -91,6 +89,6 @@ async def logout(request: AgentRequest):
         path = _get_token_path(request.email)
         if os.path.exists(path):
             os.remove(path)
-        return JSONResponse({"status": "✅ Logged out successfully."})
+        return JSONResponse({"status": "Logged out successfully."})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Logout error: {e}")
