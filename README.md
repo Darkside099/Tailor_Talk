@@ -2,6 +2,7 @@
 
 TailorTalk is a conversational assistant that seamlessly integrates with your **Google Calendar**. It understands natural language inputs to help you **check availability**, **book meetings**, and **manage your schedule**—all via an intuitive chat UI.
 
+App link : https://tailortalkgit-aqb93ggrbwpdjhsngepge4.streamlit.app/
 ---
 
 ## ⚙️ Tech Stack
@@ -53,7 +54,6 @@ sequenceDiagram
 
 ## 🚀 Run Locally
 
-```bash
 cd backend
 uvicorn main:app --reload
 
