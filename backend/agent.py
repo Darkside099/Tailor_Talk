@@ -90,9 +90,9 @@ def handle_booking(reply: str, raw_time: str, email: str) -> str:
         )
 
         local_time_str = start_time.astimezone().strftime("%A, %b %d at %I:%M %p")
-        return reply + f"\n✅ Booked: {local_time_str} ({TIMEZONE})"
+        return reply + f"\n Booked: {local_time_str} ({TIMEZONE})"
     except Exception as e:
-        return reply + f"\n❌ Failed to schedule: {e}"
+        return reply + f"\n Failed to schedule: {e}"
 
 
 def llm_controller_node(state: AgentState) -> AgentState:
@@ -126,7 +126,7 @@ ALWAYS return valid JSON. Do NOT include explanations outside the JSON.
     except Exception as e:
         return {
             "user_input": user_input,
-            "response": f"❌ LLM error: {e}",
+            "response": f" LLM error: {e}",
             "email": email,
         }
 
@@ -136,7 +136,7 @@ ALWAYS return valid JSON. Do NOT include explanations outside the JSON.
         reply = handle_check_availability(reply, email)
     elif action == "book":
         if not raw_time:
-            reply += "\n📅 When would you like to schedule it?"
+            reply += "\n When would you like to schedule it?"
         else:
             reply = handle_booking(reply, raw_time, email)
 
