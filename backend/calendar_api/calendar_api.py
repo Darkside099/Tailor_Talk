@@ -109,7 +109,7 @@ def start_google_auth() -> str:
         flow = Flow.from_client_secrets_file(
             CREDENTIALS_PATH,
             scopes=SCOPES,
-            redirect_uri="http://localhost:8000/oauth2callback",
+            redirect_uri="https://tailor-talk-n81b.onrender.com/oauth2callback",
         )
         auth_url, _ = flow.authorization_url(
             access_type="offline",
@@ -126,7 +126,7 @@ def finish_google_auth(code: str) -> Tuple[str, str]:
         flow = Flow.from_client_secrets_file(
             CREDENTIALS_PATH,
             scopes=SCOPES,
-            redirect_uri="http://localhost:8000/oauth2callback",
+            redirect_uri="https://tailor-talk-n81b.onrender.com/oauth2callback",
         )
 
         flow.fetch_token(code=code)
