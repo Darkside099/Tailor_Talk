@@ -18,9 +18,9 @@ SCOPES = [
     "https://www.googleapis.com/auth/calendar",
 ]
 
-CREDENTIALS_PATH = os.getenv("GOOGLE_CREDENTIALS_PATH", "calendar_api/credentials.json")
-TOKEN_DIR = os.getenv("GOOGLE_TOKEN_DIR", "tokens/")
-TIMEZONE = os.getenv("GOOGLE_CALENDAR_TIMEZONE", "UTC")
+CREDENTIALS_PATH = os.getenv("GOOGLE_CREDENTIALS_PATH")
+TOKEN_DIR = os.getenv("GOOGLE_TOKEN_DIR")
+TIMEZONE = os.getenv("GOOGLE_CALENDAR_TIMEZONE")
 
 os.makedirs(TOKEN_DIR, exist_ok=True)
 
