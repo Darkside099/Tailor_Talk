@@ -1,8 +1,8 @@
 import streamlit as st
 import requests
 from datetime import datetime
+BACKEND_URL = st.secrets.get("BACKEND_URL", "https://tailor-talk-n81b.onrender.com")
 
-BACKEND_URL = st.secrets.get("BACKEND_URL")
 st.set_page_config(page_title="TailorTalk", page_icon="🧵", layout="wide")
 
 
@@ -104,12 +104,12 @@ def render_chat():
 
 
 def check_auth_redirect():
-    query = st.query_params
+    query = st.experimental_get_query_params()
     if "email" in query and "name" in query:
-        st.session_state.email = query["email"]
-        st.session_state.name = query["name"]
+        st.session_state.email = query["email"][0]
+        st.session_state.name = query["name"][0]
         st.session_state.logged_in = True
-        st.query_params.clear()
+        st.experimental_set_query_params()
 
 
 def main():
@@ -125,7 +125,8 @@ def main():
         login_url = get_login_url()
         st.subheader("🔐 Login Required")
         st.markdown(
-            f"[👉 Click here to login with Google]({login_url})", unsafe_allow_html=True
+            f"[👉 Click here to login with Google]({login_url})",
+            unsafe_allow_html=True,
         )
         st.info("After logging in, you'll return here automatically.")
         return
