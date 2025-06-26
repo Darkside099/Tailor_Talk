@@ -7,7 +7,9 @@ from calendar_api.calendar_api import (
     start_google_auth,
     finish_google_auth,
     is_user_authenticated,
+    _get_token_path
 )
+import os
 
 app = FastAPI(
     title="TailorTalk AI",
@@ -17,24 +19,19 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://tailor-talk-streamlit.onrender.com"
-    ],
+    allow_origins=["https://tailortalkgit-aqb93ggrbwpdjhsngepge4.streamlit.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
 class AgentRequest(BaseModel):
     user_input: str
     email: str
 
-
 @app.get("/")
 async def health_check():
-    return {"status": "TailorTalk API is live"}
-
+    return {"status": "✅ TailorTalk API is live"}
 
 @app.get("/login")
 async def login():
@@ -54,12 +51,11 @@ async def oauth2callback(request: Request):
 
         email, name = finish_google_auth(code)
 
-        frontend_url = f"https://tailor-talk-streamlit.onrender.com?email={email}&name={name}"
+        frontend_url = f"https://tailortalkgit-aqb93ggrbwpdjhsngepge4.streamlit.app/?email={email}&name={name}"
         return RedirectResponse(url=frontend_url)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OAuth error: {e}")
-
 
 @app.post("/agent")
 async def run_agent(request: AgentRequest):
@@ -71,7 +67,7 @@ async def run_agent(request: AgentRequest):
             {"user_input": request.user_input, "email": request.email}
         )
         return {
-            "response": result.get("response", "Sorry, I didn’t understand that.")
+            "response": result.get("response", "❓ Sorry, I didn’t understand that.")
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Agent error: {e}")
@@ -79,16 +75,10 @@ async def run_agent(request: AgentRequest):
 
 @app.post("/logout")
 async def logout(request: AgentRequest):
-    """
-    Optional: If you want to delete user's token on logout
-    """
     try:
-        from calendar_api.calendar_api import _get_token_path
-        import os
-
         path = _get_token_path(request.email)
         if os.path.exists(path):
             os.remove(path)
-        return JSONResponse({"status": "Logged out successfully."})
+        return JSONResponse({"status": "✅ Logged out successfully."})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Logout error: {e}")
