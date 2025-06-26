@@ -2,8 +2,8 @@ import streamlit as st
 import requests
 from datetime import datetime
 
-# Backend URL (read from secrets)
-BACKEND_URL = st.secrets.get("BACKEND_URL", "http://localhost:8000")
+
+BACKEND_URL = st.secrets.get("BACKEND_URL")
 
 st.set_page_config(page_title="TailorTalk", page_icon="🧵", layout="wide")
 
